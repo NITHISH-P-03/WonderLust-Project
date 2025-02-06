@@ -8,7 +8,7 @@
   <div class="card col-6 offset-3 show-card listing-card">
     <img
       class="card-img-top show-img"
-      src="<%=listing.image%>"
+      src="<%=listing.image.url%>"
       alt="listing_image"
     />
     <div class="card-body">
@@ -114,6 +114,7 @@
     </form>
     <%}%>
 
+    <%if(listing.reviews.length >0) {%>
     <p><b>All Reviews</b></p>
     <div class="row mb-3">
       <% for(review of listing.reviews) {%>
@@ -134,5 +135,6 @@
       </div>
       <%}%>
     </div>
+    <% } %>
   </div>
 </div>

@@ -93,9 +93,9 @@ app.use((req,res,next)=>{
 // })
 
 
-app.get("/",(req,res)=>{
-    res.send("This is the Home page");
-})
+// app.get("/",(req,res)=>{
+//     res.send("This is the Home page");
+// })
 
 
 

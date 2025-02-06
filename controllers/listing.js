@@ -43,9 +43,15 @@ module.exports.showListing=async (req, res) => {
 
     //let {title,description,image,price,location,country}=req.body;
     //the above method is easier for less number of data //for more number  of data create a object
+
+
+    let url=req.file.path;
+    let filename=req.file.filename;
+   // console.log(url,"...",filename);
     let newlisting = req.body.listing; //the listing is we add the components in object called listing in new.ejs
     let listing = new Listing(newlisting);
     listing.owner = req.user._id;
+    listing.image = {url,filename};
     await listing.save();
     req.flash("success", "New Listing is Created");
     res.redirect("/listings");
@@ -58,13 +64,23 @@ module.exports.showListing=async (req, res) => {
        req.flash("error", "The requested Listing does not Exists");
        res.redirect("/listings");
      }
-     res.render("listings/edit.ejs", { listing });
+
+     let originalImageUrl=listing.image.url;
+     originalImageUrl=originalImageUrl.replace("/upload","/upload/w_250")
+
+     res.render("listings/edit.ejs", { listing,originalImageUrl });
    };
    
    
 module.exports.updateListing=async (req, res) => {
     let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    let listing=await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    if(typeof req.file!=="undefined"){
+      let url=req.file.path;
+      let filename=req.file.filename;
+      listing.image = {url,filename};
+      await listing.save();
+    }
     req.flash("success", "Listing is Updated");
     res.redirect(`/listings/${id}`); //"/listings"
   };

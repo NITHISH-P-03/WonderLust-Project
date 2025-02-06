@@ -17,15 +17,14 @@ router.route("/")
 
   wrapAsync(listingController.index)
 )
-  // ).post( 
-//   //adding route(create Route)
-//   isLoggedin,
-//   validateListing,
-//   wrapAsync(listingController.createListing)
-// );
-.post(upload.single('listing[image]'),(req,res)=>{
-  res.send(req.file);
-})
+.post( 
+  //adding route(create Route)
+  isLoggedin,
+  upload.single('listing[image]'),
+  validateListing,
+  wrapAsync(listingController.createListing)
+);
+
 
 
 
@@ -38,9 +37,10 @@ router.route("/:id")
 .get(
   wrapAsync(listingController.showListing)
 ).put(//(Update Route)
-  validateListing,
   isLoggedin,
   isOwner,
+  upload.single('listing[image]'),
+  validateListing,
   wrapAsync(listingController.updateListing)
 ).delete(//Delete Route
   isLoggedin,
